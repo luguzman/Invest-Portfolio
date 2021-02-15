@@ -1,0 +1,64 @@
+version: "3"
+
+services:      
+    frontend:
+      build:
+        context: ./frontend_docker
+        dockerfile: Dockerfile
+      volumes:
+        - app_data:/appdata:ro
+      command: start-front
+      ports:
+         - "5000:5000"
+    
+    asset_portfolio:
+      build:
+        context: ./asset_portfolio
+        dockerfile: Dockerfile
+      volumes:
+        - app_data:/appdata:rw
+      command: start-portfolio
+      ports: 
+        - "5001:5001"
+
+    timeseries:
+      build:
+        context: ./timeseries_docker
+        dockerfile: Dockerfile
+      depends_on:
+        - wshist
+      volumes:
+        - app_data:/appdata:rw
+      command: start-timeseries
+      ports:
+        - "5004:5004"
+
+    wshist:
+      build:
+        context: ./webscraper_hist_docker
+        dockerfile: Dockerfile
+      depends_on:
+        - sqls
+      command: start-webscraper_hist
+
+    db_sql:
+      image: mysql:5.7
+      ports:
+        - "3306:3306"
+      environment:
+        - MYSQL_ROOT_PASSWORD=secret
+        - MYSQL_DB_USERNAME=root
+
+    sqls:
+      build:
+        context: ./sql_service_docker
+        dockerfile: Dockerfile
+      ports:
+        - "5003:5003"
+      depends_on:
+        - db_sql
+      command: start-sql_service
+
+volumes:
+  app_data:
+    driver: local

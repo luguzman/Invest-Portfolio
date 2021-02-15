@@ -1,0 +1,215 @@
+<!doctype html>
+  <body>
+    <head>
+        <!-- Bootstrap core CSS -->
+      <link href="/static/bootstrap.min.css?1.02" rel="stylesheet">
+
+      <style>
+        .bd-placeholder-img {
+          font-size: 1.125rem;
+          text-anchor: middle;
+          -webkit-user-select: none;
+          -moz-user-select: none;
+          -ms-user-select: none;
+          user-select: none;
+        }
+
+        @media (min-width: 768px) {
+          .bd-placeholder-img-lg {
+            font-size: 3.5rem;
+          }
+        }
+      </style>
+    </head>
+    <header>
+  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+    <a class="navbar-brand" href="#">Invest platform</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse" aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarCollapse">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="/home">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" id="crypto-forecast-btn" href="/crypto_forecast">Crypto forecast</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/crypto_portfolio">Crypto portfolio</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/Asset_portfolio" tabindex="-1" aria-disabled="true">Asset portfolio<span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+      <form class="form-inline mt-2 mt-md-0">
+        <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+      </form>
+    </div>
+  </nav>
+</header>
+  <body>
+    <div class="jumbotron">
+      <p style="font-size:20px;text-align:justify">The new request is completed:</p>
+      <form action="{{ url_for('handle_data') }}" method="post">
+        <div class="row">
+        <div class="col-6">
+          <div class="form-group col-md-3">
+            <label for="inputAsset1">Asset 1</label>
+            <input name="Asset1" type="Asset1" class="form-control" id="inputAsset1" placeholder="Insert Asset 1">
+          </div>
+          <div class="form-group col-md-3">
+            <label for="inputAsset1">Asset 2</label>
+            <input name="Asset2" type="text" class="form-control" id="inputAsset1" placeholder="Insert Asset 2">
+          </div>
+          <div class="form-group col-md-3">
+            <label for="inputAsset3">Asset 3</label>
+            <input name="Asset3" type="text" class="form-control" id="inputAsset3" placeholder="Insert Asset 3">
+          </div>
+          <div class="form-group col-md-3">
+            <label for="inputAsset4">Asset 4</label>
+            <input name="Asset4" type="text" class="form-control" id="inputAsset4" placeholder="Insert Asset 4">
+          </div>
+        </div>
+        <div class="col-6">
+          <p style="text-align:justify">Please select the amount of historical data
+                                        you want to consider for the new request. </p>
+            <div class="form-group col-md-5">
+              <input name = "Years" class="form-control form-control-sm" type="text" placeholder="Input number of years to consider">
+            </div>
+          <p>Select the number of months desired</p>
+            <div class="form-group col-md-5">
+              <select name = "Months" class="form-control form-control-sm" width = 50px>
+                <option>0</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+                <option>11</option>
+                <option>12</option>
+              </select>
+            </div>
+          <p>Select the number of days desired</p>
+            <div class="form-group col-md-5">
+              <select name = "Days" class="form-control form-control-sm" width = 50px>
+                <option>0</option>
+                <option>1</option>
+                <option>2</option>
+                <option>3</option>
+                <option>4</option>
+                <option>5</option>
+                <option>6</option>
+                <option>7</option>
+                <option>8</option>
+                <option>9</option>
+                <option>10</option>
+                <option>11</option>
+                <option>12</option>
+                <option>13</option>
+                <option>14</option>
+                <option>15</option>
+                <option>16</option>
+                <option>17</option>
+                <option>18</option>
+                <option>19</option>
+                <option>20</option>
+                <option>21</option>
+                <option>22</option>
+                <option>23</option>
+                <option>24</option>
+                <option>25</option>
+                <option>26</option>
+                <option>27</option>
+                <option>28</option>
+                <option>29</option>
+                <option>30</option>
+                <option>31</option>
+              </select>
+            </div>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <p></p>
+            <div id="centro">
+              <button type="submit" class="btn btn-secondary btn-sm">Submit</button>
+            </div>
+        </div>
+      </div>
+      </form>
+      <p></p>
+      <p></p>
+      <div class="row">
+        <div class="col-6">
+          <p style="font-size:20px"><b>Maximum Sharpe Ratio Portfolio Allocation</b></p>
+          <p></p>
+          <p>Annualised Return: {{ asset_info['rp']*100 }}%</p>
+          <p>Annualised Volatility: {{ asset_info['sdp']*100 }}%</p>
+          <p></p>
+          <p>Max sharpe rate allocation:</p>
+          <table class="table" style= "width:30px">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">{{ stocks[0] }}</th>
+                <th scope="col">{{ stocks[1] }}</th>
+                <th scope="col">{{ stocks[2] }}</th>
+                <th scope="col">{{ stocks[3] }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Allocation</th>
+                <td>{{ asset_info['max_sharpe_allocation'][stocks[0]]['allocation'] }}%</td>
+                <td>{{ asset_info['max_sharpe_allocation'][stocks[1]]['allocation'] }}%</td>
+                <td>{{ asset_info['max_sharpe_allocation'][stocks[2]]['allocation'] }}%</td>
+                <td>{{ asset_info['max_sharpe_allocation'][stocks[3]]['allocation'] }}%</td>
+              </tr>
+            </tbody>
+          </table>
+          <p>Download returns and weights from the efficient frontier</p>
+          
+          <a class="btn btn-secondary btn-sm" href="/get-csv/efficient_frontier_portfolios" target="_blank">Download</a>
+        </div>
+        <div class="col-6">
+          <p style="font-size:20px"><b>Minimum Volatility Portfolio Allocation</b></p>
+          <p>Annualised Return: {{ asset_info['rp_min']*100 }}%</p>
+          <p>Annualised Volatility: {{ asset_info['sdp_min']*100 }}%</p>
+          <p></p>
+          <p>Min volatility allocation:</p>
+          <table class="table" style= "width:30px">
+            <thead class="thead-dark">
+              <tr>
+                <th scope="col"></th>
+                <th scope="col">{{ stocks[0] }}</th>
+                <th scope="col">{{ stocks[1] }}</th>
+                <th scope="col">{{ stocks[2] }}</th>
+                <th scope="col">{{ stocks[3] }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <th scope="row">Allocation</th>
+                <td>{{ asset_info['min_vol_allocation'][stocks[0]]['allocation'] }}%</td>
+                <td>{{ asset_info['min_vol_allocation'][stocks[1]]['allocation'] }}%</td>
+                <td>{{ asset_info['min_vol_allocation'][stocks[2]]['allocation'] }}%</td>
+                <td>{{ asset_info['min_vol_allocation'][stocks[3]]['allocation'] }}%</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <p></p>
+      <p></p>
+      {{ asset_portfolio|safe }}
+    </div>    
+  </body>
+</html>
