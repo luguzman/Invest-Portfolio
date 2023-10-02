@@ -49,8 +49,8 @@ def nasdaq_portfolio(asset1='AAPL', asset2='AMZN', asset3='GOOGL', asset4='FB',
     logging.info("Running nasdaq_portfolio function")
     logging.info(type(years))
     str_init_date = datetime.strftime(datetime.strptime(str_today, "%Y-%m-%d") - relativedelta(years=int(years)) 
-                                                                               - relativedelta(months=int(months))
-                                                                               - relativedelta(days=int(days)), "%Y-%m-%d")
+                                                                                - relativedelta(months=int(months))
+                                                                                - relativedelta(days=int(days)), "%Y-%m-%d")
 
 
     stocks = [str(asset1),str(asset2),str(asset3),str(asset4)]
@@ -61,7 +61,7 @@ def nasdaq_portfolio(asset1='AAPL', asset2='AMZN', asset3='GOOGL', asset4='FB',
     logging.info(raw_data)
     raw_data = raw_data[[( stocks[0],  'Close'),( stocks[1],  'Close'),( stocks[2],  'Close'),( stocks[3],  'Close')]]
     raw_data.columns=[stocks[0],stocks[1],stocks[2],stocks[3]]
-    
+
     # Plotting evolution of the assets
     # plot_evolution_stock(raw_data)
 
@@ -71,8 +71,8 @@ def nasdaq_portfolio(asset1='AAPL', asset2='AMZN', asset3='GOOGL', asset4='FB',
     returns = raw_data.pct_change()
     mean_returns = returns.mean()
     cov_matrix = returns.cov()
-    num_portfolios = 5000
-    risk_free_rate = 0.0012 #.0013 actualmente 14 OCT 2020
+    num_portfolios = 10000
+    risk_free_rate = 0.0552 #.0013 actualmente 14 OCT 2020
 
     logging.info("Creating asset portfolio info & plot")
     # Create and save portafolio information & plot
@@ -82,7 +82,7 @@ def nasdaq_portfolio(asset1='AAPL', asset2='AMZN', asset3='GOOGL', asset4='FB',
     logging.info("Assets portfolio plot info saved")
 
     assets_dict = str({"rp": round(rp,4), "sdp": round(sdp,4), "max_sharpe_allocation":max_sharpe_allocation.to_dict(),
-             "rp_min": round(rp_min,4), "sdp_min": round(sdp_min,4), "min_vol_allocation":min_vol_allocation.to_dict()})
+                "rp_min": round(rp_min,4), "sdp_min": round(sdp_min,4), "min_vol_allocation":min_vol_allocation.to_dict()})
     assets_dict = assets_dict.replace("'","\"")
 
     weights_efficient_frontier = {stocks[0]:[], stocks[1]:[], stocks[2]:[], stocks[3]:[]}
@@ -91,10 +91,10 @@ def nasdaq_portfolio(asset1='AAPL', asset2='AMZN', asset3='GOOGL', asset4='FB',
             weights_efficient_frontier[stocks[w]].append(efficient_portfolios[i]['x'][w])
 
     efficient_frontier_portfolios = pd.DataFrame({'returns':target, 
-              stocks[0]: np.round(weights_efficient_frontier[stocks[0]],4), 
-              stocks[1]: np.round(weights_efficient_frontier[stocks[1]],4),
-              stocks[2]: np.round(weights_efficient_frontier[stocks[2]],4), 
-              stocks[3]: np.round(weights_efficient_frontier[stocks[3]],4)})
+                stocks[0]: np.round(weights_efficient_frontier[stocks[0]],4), 
+                stocks[1]: np.round(weights_efficient_frontier[stocks[1]],4),
+                stocks[2]: np.round(weights_efficient_frontier[stocks[2]],4), 
+                stocks[3]: np.round(weights_efficient_frontier[stocks[3]],4)})
 
     logging.info("Saving returns and weights from portfolios of the efficient frontier of delivered assets")
     efficient_frontier_portfolios.to_csv("/appdata/efficient_frontier_portfolios.csv")

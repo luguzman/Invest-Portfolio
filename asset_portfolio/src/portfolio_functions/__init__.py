@@ -167,7 +167,7 @@ def display_calculated_ef_with_random(mean_returns, cov_matrix, num_portfolios, 
                     marker_symbol = "square"                
                     ))
     fig.update_layout(
-        title="",
+        title="Portfolio with:" + str(raw_data.columns.values),
         xaxis_tickfont_size=14,
         yaxis=dict(
             title='Returns',
